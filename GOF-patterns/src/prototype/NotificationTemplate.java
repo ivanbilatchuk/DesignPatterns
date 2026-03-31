@@ -5,7 +5,6 @@ import java.util.Objects;
 public class NotificationTemplate implements Prototype {
     private final String name;
     private final String text;
-
     public NotificationTemplate(String name, String text) {
         this.name = name;
         this.text = text;
