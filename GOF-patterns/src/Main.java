@@ -1,9 +1,9 @@
-import factory.NotificationType;
-import singleton.Settings;
-import prototype.NotificationTemplate;
-import factory_method.*;
-import builder.*;
-import abstract_factory.*;
+import creational.factory.NotificationType;
+import creational.singleton.Settings;
+import creational.prototype.NotificationTemplate;
+import creational.factory_method.*;
+import creational.abstract_factory.*;
+import structural.adapter.SmsAdapter;
 
 public static void main(String[] args) {
     System.out.println("CREATIONAL DESIGN PATTERNS DEMONSTRATION\n");
@@ -24,8 +24,8 @@ public static void main(String[] args) {
     smsFactory.create().send();
 
     System.out.println("[Builder] Builder Construction:");
-    builder.MessageBuilder messageBuilder = new builder.MessageBuilder();
-    builder.Message message = messageBuilder
+    creational.builder.MessageBuilder messageBuilder = new creational.builder.MessageBuilder();
+    creational.builder.Message message = messageBuilder
             .setRecipient("admin@chnu.edu.ua")
             .setText("System update successful")
             .build();
@@ -44,8 +44,10 @@ public static void main(String[] args) {
     androidPackage.sound().play();
 
     System.out.println("\n--- Testing Static Factory---");
-    factory.Notification staticMail = factory.NotificationFactory.createNotification(NotificationType.EMAIL);
+    creational.factory.Notification staticMail = creational.factory.NotificationFactory.createNotification(NotificationType.EMAIL);
     System.out.println("[Static Factory] Details: " + staticMail.getDetails());
 
-
 }
+
+
+
