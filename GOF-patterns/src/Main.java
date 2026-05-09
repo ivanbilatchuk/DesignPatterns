@@ -47,7 +47,40 @@ public static void main(String[] args) {
     creational.factory.Notification staticMail = creational.factory.NotificationFactory.createNotification(NotificationType.EMAIL);
     System.out.println("[Static Factory] Details: " + staticMail.getDetails());
 
+    System.out.println("\nSTRUCTURAL DESIGN PATTERNS DEMONSTRATION\n");
+
+    System.out.println("[Adapter] Testing SMS Adapter:");
+    structural.adapter.Notification adapter = new structural.adapter.SmsAdapter();
+    adapter.send("Alert", "System overload!");
+
+    System.out.println("\n[Bridge] Testing Urgent Notification via Email:");
+    structural.bridge.UrgentNotification bridgeNotif = new structural.bridge.UrgentNotification(new structural.bridge.EmailSender());
+    bridgeNotif.notify("Server down!");
+
+    System.out.println("\n[Composite] Testing Department Notifications:");
+    structural.composite.Department itDept = new structural.composite.Department();
+    itDept.add(new structural.composite.User("Alice "));
+    itDept.add(new structural.composite.User("Bob "));
+    itDept.receive("Meeting at 5 PM.");
+
+    System.out.println("\n[Decorator] Testing Encrypted Message:");
+    structural.decorator.Message msg = new structural.decorator.BaseMessage("Secret data");
+    structural.decorator.Message encryptedMsg = new structural.decorator.EncryptionDecorator(msg);
+    System.out.println("Original: " + msg.getContent());
+    System.out.println("Decorated: " + encryptedMsg.getContent());
+
+    System.out.println("\n[Facade] Testing Notification Facade:");
+    structural.facade.NotificationFacade facade = new structural.facade.NotificationFacade();
+    facade.sendNotification("Welcome", "Hello new user!", "api-key-123");
+
+    System.out.println("\n[Flyweight] Testing Notification History:");
+    structural.flyweight.NotificationFactory fwFactory = new structural.flyweight.NotificationFactory();
+    structural.flyweight.NotificationHistory history = new structural.flyweight.NotificationHistory(fwFactory);
+    history.record(structural.flyweight.NotificationType.EMAIL, "10:00", "User1");
+    history.record(structural.flyweight.NotificationType.EMAIL, "10:05", "User2");
+
+    System.out.println("\n[Proxy] Testing Notification Proxy:");
+    structural.proxy.ServiceAccess proxy = new structural.proxy.NotificationProxy();
+    proxy.execute("GUEST");
+    proxy.execute("ADMIN");
 }
-
-
-
