@@ -16,12 +16,12 @@ public static void main(String[] args) {
         System.out.print("[Prototype] Cloned Template: ");
         clone.print();
 
-        System.out.println("\n[Factory Method] Testing multiple providers:");
-        NotificationFactory emailFactory = new EmailFactory();
-        emailFactory.create().send();
+        System.out.println("\n[Factory Method] Testing multiple providers (Functional):");
+        java.util.function.Supplier<creational.factory_method.Notification> emailFactory = creational.factory_method.Email::new;
+        emailFactory.get().send();
 
-        NotificationFactory smsFactory = new SmsFactory();
-        smsFactory.create().send();
+        java.util.function.Supplier<creational.factory_method.Notification> smsFactory = creational.factory_method.Sms::new;
+        smsFactory.get().send();
 
         System.out.println("[Builder] Builder Construction:");
         creational.builder.MessageBuilder messageBuilder = new creational.builder.MessageBuilder();
@@ -64,11 +64,12 @@ public static void main(String[] args) {
         itDept.add(new structural.composite.User("Bob "));
         itDept.receive("Meeting at 5 PM.");
 
-        System.out.println("\n[Decorator] Testing Encrypted Message:");
-        structural.decorator.Message msg = new structural.decorator.BaseMessage("Secret data");
-        structural.decorator.Message encryptedMsg = new structural.decorator.EncryptionDecorator(msg);
-        System.out.println("Original: " + msg.getContent());
-        System.out.println("Decorated: " + encryptedMsg.getContent());
+        System.out.println("\n[Decorator] Testing Encrypted Message (Functional):");
+        String originalMsg = "Secret data";
+        java.util.function.Function<String, String> decoratedMsg = structural.decorator.EncryptionDecorator.addHeader
+                .andThen(structural.decorator.EncryptionDecorator.encrypt);
+        System.out.println("Original: " + originalMsg);
+        System.out.println("Decorated: " + decoratedMsg.apply(originalMsg));
         System.out.println("\n[Facade] Testing Notification Facade:");
         structural.facade.NotificationFacade facade = new structural.facade.NotificationFacade();
         facade.sendNotification("Welcome", "Hello new user!", "api-key-123");
@@ -144,10 +145,10 @@ public static void main(String[] args) {
         behavioral.state.StatePattern.SentState sent = new behavioral.state.StatePattern.SentState();
         sent.doAction(context);
 
-        System.out.println("\n[Strategy] Testing Delivery Strategies:");
-        behavioral.strategy.StrategyPattern.NotificationSender senderEmail = new behavioral.strategy.StrategyPattern.NotificationSender(new behavioral.strategy.StrategyPattern.EmailDelivery());
+        System.out.println("\n[Strategy] Testing Delivery Strategies (Functional):");
+        behavioral.strategy.StrategyPattern.NotificationSender senderEmail = new behavioral.strategy.StrategyPattern.NotificationSender(behavioral.strategy.StrategyPattern.emailDelivery);
         senderEmail.executeStrategy("Report is ready.");
-        behavioral.strategy.StrategyPattern.NotificationSender senderSms = new behavioral.strategy.StrategyPattern.NotificationSender(new behavioral.strategy.StrategyPattern.SmsDelivery());
+        behavioral.strategy.StrategyPattern.NotificationSender senderSms = new behavioral.strategy.StrategyPattern.NotificationSender(behavioral.strategy.StrategyPattern.smsDelivery);
         senderSms.executeStrategy("Report is ready.");
 
         System.out.println("\n[Template] Testing Notification Processes:");
@@ -162,4 +163,10 @@ public static void main(String[] args) {
         behavioral.visitor.VisitorPattern.NotificationVisitor exportVisitor = new behavioral.visitor.VisitorPattern.ExportVisitor();
         textNode.accept(exportVisitor);
         htmlNode.accept(exportVisitor);
+
+        System.out.println("\n[Execute Around] Testing Resource Management:");
+        behavioral.execute_around.ExecuteAroundPattern.Resource.use(resource -> {
+            resource.doOperation("Data chunk 1");
+            resource.doOperation("Data chunk 2");
+        });
 }
